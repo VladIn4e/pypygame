@@ -325,6 +325,19 @@ def main():
                     pygame.time.delay(500)
                     game_over()
 
+        for i, v in enumerate(enemy_tails):
+            if(snake_pos["x"] + snake_pos["x_change"] == enemy_tails[i][0]
+                and snake_pos["y"] + snake_pos["y_change"] == enemy_tails[i][1]):
+                    pygame.time.delay(500)
+                    game_over()
+
+        for i, v in enumerate(enemy_tails2):
+            if(snake_pos["x"] + snake_pos["x_change"] == enemy_tails2[i][0]
+                and snake_pos["y"] + snake_pos["y_change"] == enemy_tails2[i][1]):
+                    pygame.time.delay(500)
+                    game_over()
+
+
         pygame.display.update()
 
 main()
