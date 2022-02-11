@@ -66,12 +66,23 @@ def main():
         "y_change": 0
     }
 
+    enemy_pos2 = {
+        "x": round(random.randrange(0, 500 - enemy_size[0]) / 10) * 10,
+        "y": round(random.randrange(0, 500 - enemy_size[0]) / 10) * 10,
+        "x_change": 0,
+        "y_change": 0
+    }
+
+
     enemy_tails = []
+    enemy_tails2 = []
     enemy_tails.append([enemy_pos["x"]+10, enemy_pos["y"]])
     enemy_tails.append([enemy_pos["x"]+20, enemy_pos["y"]])
     enemy_tails.append([enemy_pos["x"]+30, enemy_pos["y"]])
 
-    sensor = []
+    enemy_tails2.append([enemy_pos2["x"]+10, enemy_pos2["y"]])
+    enemy_tails2.append([enemy_pos2["x"]+20, enemy_pos2["y"]])
+    enemy_tails2.append([enemy_pos2["x"]+30, enemy_pos2["y"]])
 
     food_size = (10, 10)
     food_eaten = 0
@@ -163,6 +174,19 @@ def main():
             ltx1 = _ltx1
             lty1 = _lty1
 
+
+        ltx2 = enemy_pos2["x"]
+        lty2 = enemy_pos2["y"]
+        for i, v in enumerate(enemy_tails2):
+            _ltx2 = enemy_tails2[i][0]
+            _lty2 = enemy_tails2[i][1]
+
+            enemy_tails2[i][0] = ltx2
+            enemy_tails2[i][1] = lty2
+
+            ltx2 = _ltx2
+            lty2 = _lty2
+
         for t in snake_tails:
             pygame.draw.rect(win, colors["snake_tail"], [
                 t[0],
@@ -177,16 +201,23 @@ def main():
                 enemy_size[0],
                 enemy_size[1]])
 
-        if(snake_pos["x"] < -snake_size[0]):
+        for i in enemy_tails2:
+            pygame.draw.rect(win, colors["enemy_tails"], [
+                i[0],
+                i[1],
+                enemy_size[0],
+                enemy_size[1]])
+
+        if(snake_pos["x"] < -snake_size[0] + 10):
             game_over()
             run = False
-        elif(snake_pos["x"] > 500):
+        elif(snake_pos["x"] > 490):
             game_over()
             run = False
-        elif(snake_pos["y"] < -snake_size[1]):
+        elif(snake_pos["y"] < -snake_size[1] + 10):
             game_over()
             run = False
-        elif(snake_pos["y"] > 500):
+        elif(snake_pos["y"] > 490):
             game_over()
             run = False
 
@@ -195,6 +226,9 @@ def main():
 
         enemy_pos["x"] += enemy_pos["x_change"]
         enemy_pos["y"] += enemy_pos["y_change"]
+
+        enemy_pos2["x"] += enemy_pos2["x_change"]
+        enemy_pos2["y"] += enemy_pos2["y_change"]
 
         pygame.draw.rect(win, colors["snake_head"], [
             snake_pos["x"],
@@ -208,45 +242,18 @@ def main():
             enemy_size[0],
             enemy_size[1]])
 
+        pygame.draw.rect(win, colors["enemy"], [
+            enemy_pos2["x"],
+            enemy_pos2["y"],
+            enemy_size[0],
+            enemy_size[1]])
+
         pygame.draw.rect(win, colors["apple"], [
             food_pos["x"],
             food_pos["y"],
             food_size[0],
             food_size[1]])
 
-        centerS = (snake_pos["x"] + (snake_size[0] / 2), snake_pos["y"] + (snake_size[1] / 2))
-        centerE = (enemy_pos["x"] + (enemy_size[0] / 2), enemy_pos["y"] + (enemy_size[1] / 2))
-        centerF = (food_pos["x"] + (food_size[0] / 2), food_pos["y"] + (food_size[1] / 2))
-        pygame.draw.circle(win, (255, 255, 255), (math.floor(centerS[0]), math.floor(centerS[1])), 3)
-
-        pygame.draw.line(win, (255, 255, 255), centerS, (centerS[0], centerS[1] - 10))
-        pygame.draw.line(win, (255, 255, 255), centerS, (centerS[0] - 10, centerS[1]))
-        pygame.draw.line(win, (255, 255, 255), centerS, (centerS[0], centerS[1] + 10))
-        pygame.draw.line(win, (255, 255, 255), centerS, (centerS[0] + 10, centerS[1]))
-        a1 = pygame.draw.circle(win, (255, 255, 255), (centerS[0] + 10, centerS[1]), 2)
-        a2 = pygame.draw.circle(win, (255, 255, 255), (centerS[0] - 10, centerS[1]), 2)
-        a3 = pygame.draw.circle(win, (255, 255, 255), (centerS[0], centerS[1] + 10), 2)
-        a4 = pygame.draw.circle(win, (255, 255, 255), (centerS[0], centerS[1] - 10), 2)
-        b1 = pygame.draw.rect(win, (100, 100, 100), (centerS[0] - 100, centerS[1] - 100, 200, 200), 1)
-        pygame.draw.line(win, (255, 255, 255), centerE, centerS)
-
-        if (a1[0] > 500):
-            enemy_pos["x_change"] = 0
-            enemy_pos["y_change"] = -enemy_speed
-
-        if (a2[0] < 0):
-            enemy_pos["x_change"] = 0
-            enemy_pos["y_change"] = enemy_speed
-
-        if (a3[1] > 500):
-            enemy_pos["x_change"] = enemy_speed
-            enemy_pos["y_change"] = 0
-
-        if (a4[1] < 0):
-            enemy_pos["x_change"] = -enemy_speed
-            enemy_pos["y_change"] = 0
-
-        """
         if (snake_pos["x"] > enemy_pos["x"]):
             enemy_pos["x_change"] = enemy_speed
             enemy_pos["y_change"] = 0
@@ -259,17 +266,28 @@ def main():
         if (snake_pos["y"] < enemy_pos["y"]):
             enemy_pos["x_change"] = 0
             enemy_pos["y_change"] = -enemy_speed
-        """
+
+        if (snake_pos["x"] > enemy_pos2["x"]):
+            enemy_pos2["x_change"] = enemy_speed
+            enemy_pos2["y_change"] = 0
+        if (snake_pos["x"] < enemy_pos2["x"]):
+            enemy_pos2["x_change"] = -enemy_speed
+            enemy_pos2["y_change"] = 0
+        if (snake_pos["y"] > enemy_pos2["y"]):
+            enemy_pos2["x_change"] = 0
+            enemy_pos2["y_change"] = enemy_speed
+        if (snake_pos["y"] < enemy_pos2["y"]):
+            enemy_pos2["x_change"] = 0
+            enemy_pos2["y_change"] = -enemy_speed
 
 
         if(snake_pos["x"] == enemy_pos["x"]
             and snake_pos["y"] == enemy_pos["y"]):
             game_over()
 
-            enemy_pos = {
-                "x": round(random.randrange(0, 500 - snake_size[0]) / 10) * 10,
-                "y": round(random.randrange(0, 500 - snake_size[0]) / 10) * 10,
-            }
+        if(snake_pos["x"] == enemy_pos2["x"]
+            and snake_pos["y"] == enemy_pos2["y"]):
+            game_over()
 
         if(snake_pos["x"] == food_pos["x"]
             and snake_pos["y"] == food_pos["y"]):
@@ -282,14 +300,31 @@ def main():
             }
 
         for i, v in enumerate(snake_tails):
+            if(enemy_pos["x"] + enemy_pos["x_change"] == snake_tails[i][0]
+                and enemy_pos["y"] + enemy_pos["y_change"] == snake_tails[i][1]):
+                    enemy_pos = {
+                        "x": round(random.randrange(0, 500 - enemy_size[0]) / 10) * 10,
+                        "y": round(random.randrange(0, 500 - enemy_size[0]) / 10) * 10,
+                        "x_change": 0,
+                        "y_change": 0
+                    }
+
+        for i, v in enumerate(snake_tails):
+            if (enemy_pos2["x"] + enemy_pos2["x_change"] == snake_tails[i][0]
+                and enemy_pos2["y"] + enemy_pos2["y_change"] == snake_tails[i][1]):
+                    enemy_pos2 = {
+                        "x": round(random.randrange(0, 500 - enemy_size[0]) / 10) * 10,
+                        "y": round(random.randrange(0, 500 - enemy_size[0]) / 10) * 10,
+                        "x_change": 0,
+                        "y_change": 0
+                    }
+
+        for i, v in enumerate(snake_tails):
             if(snake_pos["x"] + snake_pos["x_change"] == snake_tails[i][0]
                 and snake_pos["y"] + snake_pos["y_change"] == snake_tails[i][1]):
                     pygame.time.delay(500)
-                    quit()
+                    game_over()
 
         pygame.display.update()
-
-    def quit():
-        pygame.quit()
 
 main()
