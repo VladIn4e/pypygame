@@ -1,11 +1,5 @@
-import time
-
 import pygame
 import random
-import sys
-import math
-import neat
-
 
 
 def main():
@@ -254,29 +248,29 @@ def main():
             food_size[0],
             food_size[1]])
 
-        if (snake_pos["x"] > enemy_pos["x"]):
+        if (snake_pos["x"] > enemy_pos["x"] and enemy_pos["x"] + 10 != enemy_pos2["x"]):
             enemy_pos["x_change"] = enemy_speed
             enemy_pos["y_change"] = 0
-        if (snake_pos["x"] < enemy_pos["x"]):
+        if (snake_pos["x"] < enemy_pos["x"] and enemy_pos["x"] - 10 != enemy_pos2["x"]):
             enemy_pos["x_change"] = -enemy_speed
             enemy_pos["y_change"] = 0
-        if (snake_pos["y"] > enemy_pos["y"]):
+        if (snake_pos["y"] > enemy_pos["y"] and enemy_pos["y"] + 10 != enemy_pos2["y"]):
             enemy_pos["x_change"] = 0
             enemy_pos["y_change"] = enemy_speed
-        if (snake_pos["y"] < enemy_pos["y"]):
+        if (snake_pos["y"] < enemy_pos["y"] and enemy_pos["y"] - 10 != enemy_pos2["y"]):
             enemy_pos["x_change"] = 0
             enemy_pos["y_change"] = -enemy_speed
 
-        if (snake_pos["x"] > enemy_pos2["x"]):
+        if (snake_pos["x"] > enemy_pos2["x"] and enemy_pos["x"] + 10 != enemy_pos2["x"]):
             enemy_pos2["x_change"] = enemy_speed
             enemy_pos2["y_change"] = 0
-        if (snake_pos["x"] < enemy_pos2["x"]):
+        if (snake_pos["x"] < enemy_pos2["x"] and enemy_pos["x"] - 10 != enemy_pos2["x"]):
             enemy_pos2["x_change"] = -enemy_speed
             enemy_pos2["y_change"] = 0
-        if (snake_pos["y"] > enemy_pos2["y"]):
+        if (snake_pos["y"] > enemy_pos2["y"] and enemy_pos["y"] + 10 != enemy_pos2["y"]):
             enemy_pos2["x_change"] = 0
             enemy_pos2["y_change"] = enemy_speed
-        if (snake_pos["y"] < enemy_pos2["y"]):
+        if (snake_pos["y"] < enemy_pos2["y"] and enemy_pos["y"] - 10 != enemy_pos2["y"]):
             enemy_pos2["x_change"] = 0
             enemy_pos2["y_change"] = -enemy_speed
 
@@ -336,8 +330,6 @@ def main():
                 and snake_pos["y"] + snake_pos["y_change"] == enemy_tails2[i][1]):
                     pygame.time.delay(500)
                     game_over()
-
-
         pygame.display.update()
 
 main()
